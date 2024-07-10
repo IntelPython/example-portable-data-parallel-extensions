@@ -1,0 +1,2 @@
+scikit-build-core
+-r ../requirements_nvidia.txt

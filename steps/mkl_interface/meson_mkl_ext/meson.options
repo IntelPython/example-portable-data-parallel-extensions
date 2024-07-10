@@ -1,0 +1,6 @@
+option(
+    'target-cuda', 
+    type: 'boolean', 
+    value: false, 
+    description: 'Whether to compile for SYCL target NVPTX64'
+)

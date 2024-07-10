@@ -1,0 +1,16 @@
+# To use:
+#
+#   $ conda env create -f environment.yml  # can use `mamba` too
+#   $ conda activate kde-ext
+#
+name: kde-ext
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - cython
+  - ninja>=1.11.1
+  - scikit-build
+  - cmake
+  - numpy
+  - pybind11

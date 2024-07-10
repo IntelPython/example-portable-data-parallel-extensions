@@ -1,0 +1,6 @@
+meson_mkl_ext/build/
+meson_mkl_ext/subprojects/packagecache/
+meson_mkl_ext/subprojects/pybind11-2.12.0/
+mkl_interface_ext/__pycache__
+.pytest_cache/
+tests/__pycache__

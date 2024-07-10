@@ -1,0 +1,6 @@
+[submodule "steps/kernel_density_estimation_cpp/argparse"]
+	path = steps/kernel_density_estimation_cpp/argparse
+	url = https://github.com/p-ranav/argparse
+[submodule "steps/mkl_interface/oneMKL"]
+	path = steps/mkl_interface/oneMKL
+	url = https://github.com/oneapi-src/oneMKL

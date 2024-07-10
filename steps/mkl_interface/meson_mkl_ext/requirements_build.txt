@@ -1,0 +1,2 @@
+meson-python>=0.16.0
+-r ../requirements_nvidia.txt

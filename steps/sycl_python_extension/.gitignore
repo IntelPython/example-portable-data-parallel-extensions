@@ -1,0 +1,7 @@
+kde_sycl_ext/_kde_sycl_ext*.so
+kde_sycl_ext/__pycache__
+kde_sycl_ext.egg-info
+_skbuild/
+meson_sycl_python_extension/subprojects/packagecache
+meson_sycl_python_extension/subprojects/pybind11-2.12.0
+meson_sycl_python_extension/build

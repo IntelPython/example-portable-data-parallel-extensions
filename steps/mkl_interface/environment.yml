@@ -1,0 +1,15 @@
+# To use:
+#
+#   $ conda env create -f environment.yml  # can use `mamba` too
+#   $ conda activate mkl-ext
+#
+name: mkl-ext
+channels:
+  - conda-forge
+  - intel
+dependencies:
+  - python
+  - dpctl
+  - numpy
+  - pybind11
+  - pytest

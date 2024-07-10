@@ -1,0 +1,4 @@
+--extra-index-url https://pypi.anaconda.org/intel/simple
+dpctl
+numpy
+pybind11

@@ -1,0 +1,19 @@
+[build-system]
+build-backend = "mesonpy"
+requires = [
+    "meson-python>=0.16.0",
+    "pybind11",
+    "dpctl",
+    "ninja>=1.11.1; platform_system!='Windows'",
+]
+
+[project]
+name = "mkl_interface_ext"
+version = "0.0.1"
+description="An example of a pybind11 extension for dpctl using oneMKL interface library"
+authors=[
+    {name = "Oleksandr Pavlyk", email="oleksandr.pavlyk@intel.com"},
+    {name = "Nikita Grigorian", email="nikita.grigorian@intel.com"}
+]
+license={text = "Apache 2.0"}
+requires-python = ">=3.9"

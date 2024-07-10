@@ -1,0 +1,4 @@
+scikit-build-core
+cmake>=3.27
+ninja>=1.11.1
+-r ../requirements.txt

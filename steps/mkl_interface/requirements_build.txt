@@ -1,0 +1,6 @@
+cython
+numpy
+pybind11
+scikit-build
+cmake>=3.27
+ninja>=1.11.1
