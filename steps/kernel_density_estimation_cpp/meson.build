@@ -17,9 +17,20 @@ if not result
 endif
 
 should_target_cuda = get_option('target-cuda')
+targeted_hip_arch = get_option('target-hip')
 if should_target_cuda
-    sycl_compile_opts = ['-fsycl', '-fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown']
-    sycl_link_opts = ['-fsycl', '-fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown']
+    sycl_targets = 'nvptx64-nvidia-cuda,spir64-unknown-unknown'
+if targeted_hip_arch
+    if sycl_targets
+      sycl_targets = 'amdgcn-amd-amdhsa,' + sycl_targets
+    else
+      sycl_targets = 'amdgcn-amd-amdhsa,spir64-unknown-unknown'
+if sycl_targets
+  sycl_compile_opts = ['-fsycl', '-fsycl-targets=' + sycl_targets]
+  sycl_link_opts = ['-fsycl', '-fsycl-targets=' + sycl_targets]
+  if targeted_hip_arch
+    sycl_compile_opts = sycl_compile_opts + ['-Xsycl-target-backend=amdgcn-amd-amdhsa', '--offload-arch=' + targeted_hip_arch]
+    sycl_link_opts = sycl_link_opts + ['-Xsycl-target-backend=amdgcn-amd-amdhsa', '--offload-arch=' + targeted_hip_arch]
 else
     sycl_compile_opts = '-fsycl'
     sycl_link_opts = '-fsycl'
