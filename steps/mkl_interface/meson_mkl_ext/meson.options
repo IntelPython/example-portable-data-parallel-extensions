@@ -7,7 +7,7 @@ option(
 
 option(
     'target-hip',
-    type: 'str',
+    type: 'string',
     value: '',
     description: 'Whether to compile for a given HIP architecture'
 )
