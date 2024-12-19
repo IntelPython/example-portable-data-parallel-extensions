@@ -26,7 +26,7 @@ if should_target_cuda
   sycl_targets = 'nvptx64-nvidia-cuda,spir64-unknown-unknown'
 endif
 if targeted_hip_arch != ''
-  if sycl_targets
+  if sycl_targets != ''
     sycl_targets = 'amdgcn-amd-amdhsa,' + sycl_targets
   else
     sycl_targets = 'amdgcn-amd-amdhsa,spir64-unknown-unknown'
