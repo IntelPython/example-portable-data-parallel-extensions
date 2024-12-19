@@ -22,6 +22,7 @@ endif
 
 should_target_cuda = get_option('target-cuda')
 targeted_hip_arch = get_option('target-hip')
+sycl_targets = ''
 if should_target_cuda
   sycl_targets = 'nvptx64-nvidia-cuda,spir64-unknown-unknown'
 endif
