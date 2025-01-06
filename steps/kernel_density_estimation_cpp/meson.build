@@ -1,4 +1,4 @@
-project('kde_app', 'cpp')
+project('kde_app', 'cpp', default_options: ['buildtype=release'])
 
 sycl_feature_code = '''#include <iostream>
 using namespace std;
