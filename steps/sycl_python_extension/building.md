@@ -18,6 +18,25 @@ Now build
 python scripts/build_locally.py --verbose --cmake-opts="-DDPCTL_TARGET_CUDA=ON"
 ```
 
+For HIP, use
+
+```bash
+python scripts/build_locally.py --verbose --cmake-opts="-DDPCTL_TARGET_HIP=<ARCH>"
+```
+
+where `<ARCH>` is the architecture of the AMD GPU.
+
+To find the architecture, use
+```bash
+rocminfo | grep 'Name: *gfx.*'
+```
+
+which should show something like
+```bash
+  Name:                    gfx1030
+```
+where `gfx` followed by four digits the GPU's the architecture.
+
 See the [`dpctl` documentation](https://intelpython.github.io/dpctl/latest/beginners_guides/installation.html#building-for-custom-sycl-targets) for more information.
 
 ## Building extension manually
@@ -82,6 +101,18 @@ VERBOSE=1 CXX=icpx Dpctl_ROOT=$(python -m dpctl --cmakedir) pip install -e \
     -Ccmake.args="-DTARGET_CUDA=ON"
 ```
 
+To build the extension to offload to AMD GPUs, we need to set ``TARGET_HIP`` cmake variable. ``TARGET_CUDA`` is boolean, but to build
+for AMD, the GPU architecture must be provided, i.e.:
+
+```bash
+VERBOSE=1 CXX=icpx Dpctl_ROOT=$(python -m dpctl --cmakedir) pip install -e \
+    scikit_build_core_sycl_python_extension --no-deps --no-build-isolation --verbose \
+    -Ccmake.args="-DTARGET_HIP=<ARCH>"
+```
+
+where `<ARCH>` is the GPU architecture. See [dpctl NVidia and AMD build instructions](#build-dpctl-for-nvidia-or-amd) for an example of
+finding the architecture.
+
 ## Build and install extension with meson-python
 
 If requirements are not installed, install requirements.
@@ -115,3 +146,14 @@ using `setup-args` [setup-args](https://meson-python.readthedocs.io/en/latest/ho
 VERBOSE=1 CXX=icpx pip install -e meson_sycl_python_extension --no-deps --no-build-isolation --verbose \
     -Csetup-args="-Dtarget-cuda=true"
 ```
+
+To build the extension to offload to AMD GPUs, we need to set ``target-hip`` cmake variable. ``target-cuda`` is boolean, but to build
+for AMD, the GPU architecture must be provided, i.e.:
+
+```bash
+VERBOSE=1 CXX=icpx pip install -e meson_sycl_python_extension --no-deps --no-build-isolation --verbose \
+    -Csetup-args="-Dtarget-hip=<ARCH>"
+```
+
+where `<ARCH>` is the GPU architecture. See [dpctl NVidia and AMD build instructions](#build-dpctl-for-nvidia-or-amd) for an example of
+finding the architecture.

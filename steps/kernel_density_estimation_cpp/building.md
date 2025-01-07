@@ -12,7 +12,20 @@ $ type -P icpx || source /opt/intel/oneapi/setvars.sh
 $ CXX=icpx cmake . -B cmake_build_dir -DCMAKE_INSTALL_PREFIX=cmake_install_dir
 ```
 
-Use `-DTARGET_CUDA=ON` to build multi-target binary.
+Use `-DTARGET_CUDA=ON` to build multi-target binary for CUDA.
+
+For HIP, use `-DTARGET_HIP=<ARCH>` where `<ARCH>` is the architecture of the AMD GPU.
+
+To find the architecture, use
+```bash
+rocminfo | grep 'Name: *gfx.*'
+```
+
+which should show something like
+```bash
+  Name:                    gfx1030
+```
+where `gfx` followed by four digits the GPU's the architecture.
 
 4. Build and install
 The C++ code uses [argparse](https://github.com/p-ranav/argparse) project to support CLI options. 
@@ -38,7 +51,20 @@ $ type -P icpx || source /opt/intel/oneapi/setvars.sh
 $ CXX=icpx meson setup meson_build_dir
 ```
 
-Use `-Dtarget-cuda=true` to build multi-target binary.
+Use `-Dtarget-cuda=true` to build multi-target binary for CUDA.
+
+For HIP, use `-DTARGET_HIP=<ARCH>` where `<ARCH>` is the architecture of the AMD GPU.
+
+To find the architecture, use
+```bash
+rocminfo | grep 'Name: *gfx.*'
+```
+
+which should show something like
+```bash
+  Name:                    gfx1030
+```
+where `gfx` followed by four digits the GPU's the architecture.
 
 4. Build and install
 ```bash

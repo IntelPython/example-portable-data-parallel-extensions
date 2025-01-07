@@ -122,11 +122,30 @@ git clone https://github.com/IntelPython/dpctl.git
 
 Make sure the necessary requirements are installed for your build path ([`scikit-build-core`](#building-c-extension-using-scikit-build-core) or [`meson-python`](#building-c-extension-using-meson-python) for each build path and installing the requirements). The appropriate requirements file will be named `requirements_build.txt` if building to target non-Intel devices, while the environment file will be `environment_build.yml`.
 
-Now build
+Now to build for CUDA
 
 ```bash
 python scripts/build_locally.py --verbose --cmake-opts="-DDPCTL_TARGET_CUDA=ON"
 ```
+
+For HIP, use
+
+```bash
+python scripts/build_locally.py --verbose --cmake-opts="-DDPCTL_TARGET_HIP=<ARCH>"
+```
+
+where `<ARCH>` is the architecture of the AMD GPU.
+
+To find the architecture, use
+```bash
+rocminfo | grep 'Name: *gfx.*'
+```
+
+which should show something like
+```bash
+  Name:                    gfx1030
+```
+where `gfx` followed by four digits the GPU's the architecture.
 
 See the [`dpctl` documentation](https://intelpython.github.io/dpctl/latest/beginners_guides/installation.html#building-for-custom-sycl-targets) for more information.
 
@@ -210,6 +229,17 @@ CXX=icpx pip install -e scikit_build_core_mkl_ext/ --no-deps --no-build-isolatio
     -Ccmake.args="-DTARGET_CUDA=ON"
 ```
 
+If building for AMD GPUs, add `-Ccmake.args="-DTARGET_HIP=<ARCH>"`:
+
+```bash
+CXX=icpx pip install -e scikit_build_core_mkl_ext/ --no-deps --no-build-isolation --verbose \
+    -Ccmake.args="-DTARGET_HIP=<ARCH>"
+```
+
+where `<ARCH>` is the GPU architecture. See [dpctl NVidia and AMD build instructions](#build-dpctl-for-nvidia-or-amd) for an example of
+finding the architecture.
+
+
 ### Building C++ extension using `meson-python`
 
 Make sure to delete the `mkl_interface_ext/_qr.so` if manual building was performed.
@@ -241,7 +271,17 @@ pytest tests
 
 If building for NVidia GPUs, add `-Csetup-args="-Dtarget-cuda=true"`:
 
-``bash
+```bash
 CXX=icpx pip install -e meson_mkl_ext/ --no-deps --no-build-isolation --verbose \
     -Csetup-args="-Dtarget-cuda=true"
 ```
+
+If building for AMD GPUs, add `-Csetup-args="-Dtarget-hip=<ARCH>"`:
+
+```bash
+CXX=icpx pip install -e meson_mkl_ext/ --no-deps --no-build-isolation --verbose \
+    -Csetup-args="-Dtarget-hip=<ARCH>"
+```
+
+where `<ARCH>` is the GPU architecture. See [dpctl NVidia and AMD build instructions](#build-dpctl-for-nvidia-or-amd) for an example of
+finding the architecture.
