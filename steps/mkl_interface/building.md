@@ -68,6 +68,7 @@ cd examples/lapack/run_time_dispatching/
 icpx -fsycl getrs_usm.cpp                                     \
     -fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown \
     -I${MKL_INTERFACE_ROOT}/include                           \
+    -I${MKL_INTERFACE_ROOT}/../examples/include               \
     -L${MKL_INTERFACE_ROOT}/lib -lonemkl                      \
     -Wl,-rpath,${MKL_INTERFACE_ROOT}/lib -o run
 ```
