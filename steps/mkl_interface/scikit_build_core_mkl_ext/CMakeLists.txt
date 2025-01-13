@@ -5,7 +5,14 @@ project(${SKBUILD_PROJECT_NAME}
     LANGUAGES CXX
     DESCRIPTION "A sample pybind11 extension using portable oneMKL interface library"
 )
-option(TARGET_CUDA "Whether to build SYCL target NVPTX64 in addition to default SPIR64 SYCL target" OFF)
+
+option(TARGET_CUDA "Whether to additionally target NVPTX64" OFF)
+
+set(TARGET_HIP
+    ""
+    CACHE STRING
+    "Whether to additionally target a user-specified HIP architecture"
+)
 
 find_package(IntelSYCL REQUIRED)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
@@ -42,9 +49,33 @@ target_include_directories(${py_module_name} PRIVATE ${Dpctl_TENSOR_INCLUDE_DIR}
 
 target_link_libraries(${py_module_name} PRIVATE MKL::onemkl)
 
+set(_sycl_targets)
+set(_hip_targets)
 if (${TARGET_CUDA})
-    target_compile_options(${py_module_name} PRIVATE -fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown)
-    target_link_options(${py_module_name} PRIVATE -fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown)
+    set(_sycl_targets "nvptx64-nvidia-cuda,spir64-unknown-unknown")
+endif()
+if (NOT "x${TARGET_HIP}" STREQUAL "x")
+    set(_hip_targets ${TARGET_HIP})
+    if(_sycl_targets)
+        set(_sycl_targets "amdgcn-amd-amdhsa,${_dpctl_sycl_targets}")
+    else()
+        set(_sycl_targets "amdgcn-amd-amdhsa,spir64-unknown-unknown")
+    endif()
+endif()
+
+set(_sycl_target_compile_options)
+set(_sycl_target_link_options)
+
+if (_sycl_targets)
+    message(STATUS "Compiling for -fsycl-targets=${_sycl_targets}")
+    list(APPEND _sycl_target_compile_options -fsycl-targets=${_sycl_targets})
+    list(APPEND _sycl_target_link_options -fsycl-targets=${_sycl_targets})
+    if(_hip_targets)
+        list(APPEND _sycl_target_compile_options -Xsycl-target-backend=amdgcn-amd-amdhsa --offload-arch=${_hip_targets})
+        list(APPEND _sycl_target_link_options -Xsycl-target-backend=amdgcn-amd-amdhsa --offload-arch=${_hip_targets})
+    endif()
+    target_compile_options(${py_module_name} PUBLIC ${_sycl_target_compile_options})
+    target_link_options(${py_module_name} PUBLIC ${_sycl_target_link_options})
 endif()
 
 install(TARGETS ${py_module_name} DESTINATION ${SKBUILD_PROJECT_NAME})

@@ -4,3 +4,10 @@ option(
     value: false, 
     description: 'Whether to compile for SYCL target NVPTX64'
 )
+
+option(
+    'target-hip',
+    type: 'string',
+    value: '',
+    description: 'Whether to compile for a given HIP architecture'
+)
