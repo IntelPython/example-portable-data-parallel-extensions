@@ -6,7 +6,7 @@
 name: kde-ext
 channels:
   - conda-forge
-  - intel
+  - https://software.repos.intel.com/python/conda/
 dependencies:
   - python
   - dpctl
