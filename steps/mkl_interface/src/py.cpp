@@ -1,5 +1,5 @@
 #include <sycl/sycl.hpp>
-#include "oneapi/mkl.hpp"
+#include "oneapi/math.hpp"
 
 #include <cstdint>
 #include <exception>
@@ -61,10 +61,10 @@ do_qr(
     std::int64_t n_linear_streams = (b > 16) ? 4 : ((b > 4 ? 2 : 1));
 
     std::int64_t scratch_sz_geqrf = 
-        oneapi::mkl::lapack::geqrf_scratchpad_size<T>(exec_q, m, n, lda);
+        oneapi::math::lapack::geqrf_scratchpad_size<T>(exec_q, m, n, lda);
 
     std::int64_t scratch_sz_orgqr = 
-        oneapi::mkl::lapack::orgqr_scratchpad_size<T>(exec_q, m, m, tau_size, lda);
+        oneapi::math::lapack::orgqr_scratchpad_size<T>(exec_q, m, m, tau_size, lda);
 
     std::int64_t padding = 256 / sizeof(T);
     size_t alloc_tau_sz = round_up_mult(n_linear_streams * tau_size, padding);
@@ -106,9 +106,9 @@ do_qr(
         // overwrites memory in current_a
         sycl::event e_geqrf;
         try {
-            e_geqrf = oneapi::mkl::lapack::geqrf(
+            e_geqrf = oneapi::math::lapack::geqrf(
                 exec_q, m, n, current_a, lda, current_tau, current_scratch_geqrf, scratch_sz_geqrf, current_dep);
-        } catch (const oneapi::mkl::lapack::exception &e) {
+        } catch (const oneapi::math::lapack::exception &e) {
             std::cerr << "Exception raised by geqrf: " << e.what() << ", info = " << e.info() << std::endl;
 
             e_ptr = std::current_exception();
@@ -152,9 +152,9 @@ do_qr(
 
         sycl::event e_orgqr; 
         try {
-            e_orgqr = oneapi::mkl::lapack::orgqr(
+            e_orgqr = oneapi::math::lapack::orgqr(
                 exec_q, m, m, tau_size, current_q, lda, current_tau, current_scratch_orgqr, scratch_sz_orgqr, {e_copy_q});
-        } catch (const oneapi::mkl::lapack::exception &e) {
+        } catch (const oneapi::math::lapack::exception &e) {
             std::cerr << "Exception raised by orgqr: " << e.what() << ", info = " << e.info() << std::endl;
 
             e_ptr = std::current_exception();
