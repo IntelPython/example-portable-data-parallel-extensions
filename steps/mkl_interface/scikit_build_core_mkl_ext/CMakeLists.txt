@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27...3.29 FATAL_ERROR)
 project(${SKBUILD_PROJECT_NAME}
     VERSION ${SKBUILD_PROJECT_VERSION}
     LANGUAGES CXX
-    DESCRIPTION "A sample pybind11 extension using portable oneMKL interface library"
+    DESCRIPTION "A sample pybind11 extension using portable oneMath interface library"
 )
 
 option(TARGET_CUDA "Whether to additionally target NVPTX64" OFF)
@@ -31,7 +31,7 @@ FetchContent_MakeAvailable(pybind11)
 
 find_package(Dpctl CONFIG REQUIRED)
 
-find_package(oneMKL CONFIG REQUIRED)
+find_package(oneMath CONFIG REQUIRED)
 
 set(py_module_name _qr)
 set(_mkl_iface_ext_sources
@@ -47,7 +47,7 @@ target_compile_options(${py_module_name} PRIVATE -O3 -fno-approx-func -fno-fast-
 target_include_directories(${py_module_name} PRIVATE ${Dpctl_INCLUDE_DIRS})
 target_include_directories(${py_module_name} PRIVATE ${Dpctl_TENSOR_INCLUDE_DIR})
 
-target_link_libraries(${py_module_name} PRIVATE MKL::onemkl)
+target_link_libraries(${py_module_name} PRIVATE MKL::onemath)
 
 set(_sycl_targets)
 set(_hip_targets)

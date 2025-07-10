@@ -1,6 +1,6 @@
 # Python data-parallel native extension
 
-Here we build Python extension for a QR decomposition using `oneMKL` LAPACK routines.
+Here we build Python extension for a QR decomposition using `oneMath` LAPACK routines.
 
 ## Building
 
