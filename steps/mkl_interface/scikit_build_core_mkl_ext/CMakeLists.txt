@@ -47,7 +47,7 @@ target_compile_options(${py_module_name} PRIVATE -O3 -fno-approx-func -fno-fast-
 target_include_directories(${py_module_name} PRIVATE ${Dpctl_INCLUDE_DIRS})
 target_include_directories(${py_module_name} PRIVATE ${Dpctl_TENSOR_INCLUDE_DIR})
 
-target_link_libraries(${py_module_name} PRIVATE MKL::onemath)
+target_link_libraries(${py_module_name} PRIVATE ONEMATH::onemath)
 
 set(_sycl_targets)
 set(_hip_targets)
