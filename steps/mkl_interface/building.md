@@ -61,7 +61,7 @@ cd ..
 A set of examples is included with the library. Let's build an LAPACK example of
 solving general triangular linear system. We use `-fsycl-targets`
 to specify targets to generate offload sections for, and link to the
-library dynamically using `–lonemath`:
+library dynamically using `-lonemath`:
 
 ```bash
 cd examples/lapack/run_time_dispatching/
@@ -69,7 +69,7 @@ icpx -fsycl getrs_usm.cpp                                     \
     -fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown \
     -I${MKL_INTERFACE_ROOT}/include                           \
     -I${MKL_INTERFACE_ROOT}/../examples/include               \
-    -L${MKL_INTERFACE_ROOT}/lib –lonemath                     \
+    -L${MKL_INTERFACE_ROOT}/lib -lonemath                     \
     -Wl,-rpath,${MKL_INTERFACE_ROOT}/lib -o run
 ```
 
@@ -178,7 +178,7 @@ Now build and install
 icpx -fsycl -fPIC -shared -fno-approx-func -fno-fast-math                 \
     $(python -m pybind11 --includes) -I$MKL_INTERFACE_ROOT/include        \
     $(python -m dpctl --includes) $(python -m dpctl --tensor-includes)    \
-    -L$MKL_INTERFACE_ROOT/lib –lonemath -Wl,-rpath,$MKL_INTERFACE_ROOT/lib \
+    -L$MKL_INTERFACE_ROOT/lib -lonemath -Wl,-rpath,$MKL_INTERFACE_ROOT/lib \
     src/py.cpp -o mkl_interface_ext/_qr.so
 ```
 
