@@ -13,7 +13,7 @@ class QRDecompositionResult(NamedTuple):
 def qr(x : dpt.usm_ndarray) -> tuple[dpt.usm_ndarray, dpt.usm_ndarray]:
     """
     Compute QR decomposition for a stack of matrices using 
-    oneMKL interface library calls.
+    oneMath interface library calls.
     """
     if not isinstance(x, dpt.usm_ndarray):
         raise TypeError(

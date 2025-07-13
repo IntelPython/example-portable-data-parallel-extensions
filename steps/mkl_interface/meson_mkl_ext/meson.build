@@ -57,9 +57,9 @@ if not pybind11_dep.found()
   pybind11_dep = pybind11_proj.get_variable('pybind11_dep')
 endif
 
-mkl_dir = fs.parent(meson.current_source_dir()) + '/oneMKL'
+mkl_dir = fs.parent(meson.current_source_dir()) + '/oneMath'
 mkl_lib_dir = mkl_dir + '/install/lib'
-mkl_lib = compiler.find_library('onemkl', dirs: mkl_lib_dir)
+mkl_lib = compiler.find_library('onemath', dirs: mkl_lib_dir)
 mkl_incl_dir = mkl_dir + '/install/include'
 mkl_incl = include_directories(mkl_incl_dir)
 

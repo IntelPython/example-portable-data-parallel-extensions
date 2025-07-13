@@ -1,24 +1,24 @@
-# oneMKL Interface
+# oneMath Interface
 
-[oneMKL Interfaces](https://github.com/oneapi-src/oneMKL) is an open-source implementation of the oneMKL Data Parallel C++ (DPC++) interface according to the [oneMKL specification](https://spec.oneapi.com/versions/latest/elements/oneMKL/source/index.html). It works with multiple devices (backends) using device-specific libraries underneath.
+[oneMath Interfaces](https://github.com/uxlfoundation/oneMath) is an open-source implementation of the oneMath Data Parallel C++ (DPC++) interface according to the [oneMath specification](https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source). It works with multiple devices (backends) using device-specific libraries underneath.
 
-oneMKL is part of the [UXL Foundation](http://www.uxlfoundation.org/).
+oneMath is part of the [UXL Foundation](http://www.uxlfoundation.org/).
 
 ## Getting the library
 
 The library can be cloned from GitHub:
 
 ```bash
-git clone https://github.com/oneapi-src/oneMKL.git
+git clone https://github.com/uxlfoundation/oneMath.git
 ```
 
-but it is also included in this repo as a git submodule, in "./oneMKL" subfolder.
+but it is also included in this repo as a git submodule, in "./oneMath" subfolder.
 
 ## Building 
 
-oneMKL interface library allows for many ways to be built, please see [building oneMKL interface](https://oneapi-src.github.io/oneMKL/building_the_project_with_dpcpp.html) for full details.
+oneMath interface library allows for many ways to be built, please see [building oneMath interface](https://uxlfoundation.github.io/oneMath/building_the_project_with_dpcpp.html) for full details.
 
-Note that building oneMKL interfaces requires cmake, which may also be required to build the extension or dpctl (if targeting NVidia(R)). As such, it may be a good idea to install requirements for the chosen build path ([`scikit-build-core`](#building-c-extension-using-scikit-build-core) or [`meson-python`](#building-c-extension-using-meson-python)) ahead of time.
+Note that building oneMath interfaces requires cmake, which may also be required to build the extension or dpctl (if targeting NVidia(R)). As such, it may be a good idea to install requirements for the chosen build path ([`scikit-build-core`](#building-c-extension-using-scikit-build-core) or [`meson-python`](#building-c-extension-using-meson-python)) ahead of time.
 
 In order to target Intel(R) GPUs, CPUs, and NVidia(R) GPUs for BLAS, LAPACK, FFT, and RNG domains configure it as follows:
 
@@ -61,7 +61,7 @@ cd ..
 A set of examples is included with the library. Let's build an LAPACK example of
 solving general triangular linear system. We use `-fsycl-targets`
 to specify targets to generate offload sections for, and link to the
-library dynamically using `-lonemkl`:
+library dynamically using `-lonemath`:
 
 ```bash
 cd examples/lapack/run_time_dispatching/
@@ -69,7 +69,7 @@ icpx -fsycl getrs_usm.cpp                                     \
     -fsycl-targets=nvptx64-nvidia-cuda,spir64-unknown-unknown \
     -I${MKL_INTERFACE_ROOT}/include                           \
     -I${MKL_INTERFACE_ROOT}/../examples/include               \
-    -L${MKL_INTERFACE_ROOT}/lib -lonemkl                      \
+    -L${MKL_INTERFACE_ROOT}/lib -lonemath                     \
     -Wl,-rpath,${MKL_INTERFACE_ROOT}/lib -o run
 ```
 
@@ -153,11 +153,11 @@ See the [`dpctl` documentation](https://intelpython.github.io/dpctl/latest/begin
 
 ### Building C++ extension manually
 
-We chose to demonstrate use of oneMKL interface library from Python by building 
+We chose to demonstrate use of oneMath interface library from Python by building 
 pybind11 extension that computes QR decomposition for a stack of real 
 floating-point matrices.
 
-Since oneMKL LAPACK functions [require](https://spec.oneapi.io/versions/latest/elements/oneMKL/source/domains/lapack/lapack.html)
+Since oneMath LAPACK functions [require](https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source/domains/lapack/lapack)
 column-major layout and modify input arrays in place, the extension must copy the input stack of matrices accordingly.
 
 If requirements are not installed, install requirements.
@@ -178,14 +178,14 @@ Now build and install
 icpx -fsycl -fPIC -shared -fno-approx-func -fno-fast-math                 \
     $(python -m pybind11 --includes) -I$MKL_INTERFACE_ROOT/include        \
     $(python -m dpctl --includes) $(python -m dpctl --tensor-includes)    \
-    -L$MKL_INTERFACE_ROOT/lib -lonemkl -Wl,-rpath,$MKL_INTERFACE_ROOT/lib \
+    -L$MKL_INTERFACE_ROOT/lib -lonemath -Wl,-rpath,$MKL_INTERFACE_ROOT/lib \
     src/py.cpp -o mkl_interface_ext/_qr.so
 ```
 
 Tests of the extension can be executed as follows:
 
 ```bash
-# work-around a problem with oneMKL library linkage
+# work-around a problem with oneMath library linkage
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MKL_INTERFACE_ROOT}/lib
 PYTHONPATH=$PYTHONPATH:$(pwd)/mkl_interface_ext pytest tests
 ```
@@ -209,8 +209,8 @@ pip install -r scikit_build_core_mkl_ext/requirements.txt
 Now build and install
 
 ```bash
-# help cmake to find oneMKL library
-export ONEMKL_ROOT=$MKL_INTERFACE_ROOT
+# help cmake to find oneMath library
+export ONEMATH_ROOT=$MKL_INTERFACE_ROOT
 # help cmake to find dpctl package if built in-place
 export Dpctl_ROOT=$(python -m dpctl --cmakedir)
 export VERBOSE=1
